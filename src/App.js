@@ -54,7 +54,8 @@ function App() {
 
   useEffect(() => {
     fetchJobs();
-
+    SortByCompany();
+    onlyCreatedSevenDaysAgo();
   }, []);
 
   return (
