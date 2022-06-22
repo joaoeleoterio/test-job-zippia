@@ -41,22 +41,26 @@ function App() {
 
   const onlyCreatedSevenDaysAgo = async () => {
     const today = new Date();
-    console.log(today);
+    // console.log(today);
     const sevenDaysAgo = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
-    console.log(sevenDaysAgo);
+    // console.log(sevenDaysAgo);
     const jobsCreatedSevenDaysAgo = jobs.filter(job => {
       const jobDate = new Date(job.postingDate);
       return jobDate >= sevenDaysAgo;
     });
-    console.log(jobsCreatedSevenDaysAgo);
+    // console.log(jobsCreatedSevenDaysAgo);
     setJobsLastSevenDays(jobsCreatedSevenDaysAgo);
   }
 
   useEffect(() => {
     fetchJobs();
+  }, []);
+
+  useEffect(() => {
     SortByCompany();
     onlyCreatedSevenDaysAgo();
-  }, []);
+
+  }, [jobs]);
 
   return (
     <div className="App">
@@ -74,24 +78,25 @@ function App() {
       <h1>By Company</h1>
       {/* show on screen jobs sorted by Company Name */}
       <ul>
-        {jobsSortByCompany.map(job => (
+        {jobsSortByCompany ? jobsSortByCompany.map(job => (
           <li key={job.listingHash}>
             <h2>{job.jobTitle}</h2>
             <p>{job.companyName}</p>
             <p>{job.shortDesc}</p>
           </li>
-        ))}
+        )) : <p>Loading...</p>}
       </ul>
       <h1>Created in the last 7 days</h1>
       {/* show on screen jobs created in the last 7 days */}
+      {console.log(jobsLastSevenDays)}
       <ul>
-        {jobsLastSevenDays.map(job => (
+        {jobsLastSevenDays ? jobsLastSevenDays.map(job => (
           <li key={job.listingHash}>
             <h2>{job.jobTitle}</h2>
             <p>{job.companyName}</p>
             <p>{job.shortDesc}</p>
           </li>
-        ))}
+        )) : <p>Loading...</p>}
       </ul>
     </div>
   );
